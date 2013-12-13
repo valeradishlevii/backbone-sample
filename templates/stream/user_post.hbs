@@ -1,0 +1,130 @@
+{{! User post in user stream or profile }}
+
+{{!--{{#if_cond stream "||" post.is_own}}
+    <a href="#" class="close pull-right hide-btn">
+        <i class="icon-remove"></i>
+    </a>
+{{/if_cond}}--}}
+<article class="timeline-item">
+    <div class="media timeline-item-content">
+        <figure class="media-figure pull-left">
+            <a href="#"><img src="{{post.user.avatar.36x36}}" class="avatar"></a>
+        </figure>
+        <div class="media-body">
+          {{#unless post_detail}}<a href="/posts/{{post.id}}" role="nav">{{/unless}}
+            <span class="timeline-item-time pull-right text-muted">{{moment post.date}}</span>
+          {{#unless post_detail}}</a>{{/unless}}
+            <h1 class="timeline-item-title">
+                <a href="/users/{{post.user.username}}" role="nav" class="il">{{post.user.username}}</a>
+            </h1>
+            <p>
+              {{materializeInclusions post.content}}
+            </p>
+
+          {{#each post.media}}
+            {{{embed}}}
+          {{/each}}
+
+            <footer class="timeline-item-footer help-block">
+                <ul class="list-inline">
+                    <li>
+                        <a href="#" class="toggle_comments-btn"><i class="glyphicon glyphicon-comment"></i>
+                          {{#unless post.comments_count}}
+                            Post comment
+                          {{else}}
+                            {{post.comments_count}} comments
+                          {{/unless}}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="like-btn" title="{{#if post.likes_count}}{{post.likes_printable.content}}{{#if post.likes_printable.others}} and {{post.likes_printable.others}} more{{/if}} liked{{else}}No one liked{{/if}} this">
+                            <i class="glyphicon glyphicon-heart"></i>
+                              {{#if post.likes_count}}{{post.likes_count}} likes{{/if}}
+                              {{#if post.liked}}(Unlike){{else}}{{#unless post.likes_count}}Like{{/unless}}{{/if}}
+                            </a>
+                        </a>
+                    </li>
+{{!--                     <li class="pull-right flag-link">
+                      {{#if post.possible_spam}}
+                          Marked as inappropriate
+                      {{else}}
+                          <a href="#" class="report-spam-btn">
+                              <i class="glyphicon glyphicon-remove-circle"></i> flag as inappropriate
+                          </a>
+                      {{/if}}
+                    </li> --}}
+                </ul>
+            </footer>
+        </div>
+    </div>
+
+    {{#if post.show_comments}}
+    <div class="timeline-item-activity">
+        <h2 class="island-element-heading help-block">
+            {{#if post.comments_count}}
+                SHOWING {{post.comments_count}} COMMENTS
+            {{else}}
+                Be the First to Post a Comment
+            {{/if}}
+        </h2>
+        <ol class="list-unstyled timeline-item-activity-list">
+
+          {{#each post.comments}}
+              <li data-id="{{id}}">
+                  <article class="media timeline-item-activity-content">
+                      <figure class="media-figure pull-left">
+                          <a href="#"><img src="{{user.avatar.36x36}}" class="avatar"></a>
+                      </figure>
+                      <div class="media-body">
+                          <h1 class="timeline-item-title">
+                              <a href="/users/{{user.username}}" role="nav" class="il">{{user.username}}</a>
+                          </h1>
+
+                          <p>
+                            {{content}}
+                          </p>
+                          <footer class="timeline-item-footer help-block">
+                              <ul class="list-inline">
+                                  <li>{{moment date}}</li>
+                                  {{!--<li><a href="#"><i class="glyphicon glyphicon-heart"></i> 5 likes</a></li>--}}
+                                 {{!--  <li class="pull-right flag-link">
+                                      {{#if possible_spam}}
+                                        Marked as inappropriate
+                                      {{else}}
+                                        <a href="#" class="report-spam-comment-btn">
+                                            <i class="glyphicon glyphicon-remove-circle"></i> flag as inappropriate
+                                        </a>
+                                      {{/if}}
+                                  </li> --}}
+                              </ul>
+                          </footer>
+                      </div>
+                  </article>
+              </li>
+          {{/each}}
+
+
+            <li class="timeline-item-activity-reply">
+                <form action="">
+                    <fieldset class="media">
+                        <figure class="media-figure pull-left">
+                            <a href="#"><img src="{{preloaded_data "current_user.attributes.avatar.36x36"}}" class="avatar"></a>
+                        </figure>
+                        <div class="media-body">
+                            <div class="form-group">
+                                <textarea autofocus type="text" name="commentValue" class="form-control compact-form-trigger active" placeholder="Reply…" rows="1" cols="40"></textarea>
+                            </div>
+                            <div class="compact-form-ctrls compact-form-ctrls-autovisible">
+                                <p class="help-block pull-left">
+                                    <span class="char-left">180</span>
+                                </p>
+                                <button type="submit" class="btn btn-primary pull-right add-comment">Post</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </li>
+        </ol>
+    </div>
+    {{/if}}
+</article>
